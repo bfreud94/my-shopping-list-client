@@ -1,7 +1,7 @@
 import { ADD_ITEM_FAIL, ADD_ITEM_SUCCESS, DELETE_ITEM_FAIL, DELETE_ITEM_SUCCESS, CLEAR_ADD_ITEM, CLEAR_ITEMS, GET_ITEMS_FAIL, GET_ITEMS_SUCCESS, UPDATE_ITEM } from './types';
 import { parseError } from '../util/validation';
 
-const serviceUri = process.env.NODE_ENV.trim() === 'development' ? 'http://localhost:8000/api' : 'https://my-shopping-list-server.bfreud94.vercel.app/api';
+const serviceUri = process.env.NODE_ENV.trim() === 'development' ? 'http://localhost:8000/api' : 'https://myshoppinglistserver.herokuapp.com/api';
 
 export const getItems = () => async (dispatch) => {
     const response = await fetch(`${serviceUri}/items/items`, {

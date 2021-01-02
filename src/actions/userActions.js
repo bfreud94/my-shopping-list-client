@@ -1,6 +1,6 @@
 import { LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT, REGISTER_FAIL, REGISTER_SUCCESS } from './types';
 
-const serviceUri = process.env.NODE_ENV.trim() === 'development' ? 'http://localhost:8000/api' : 'https://my-shopping-list-server.bfreud94.vercel.app/api';
+const serviceUri = process.env.NODE_ENV.trim() === 'development' ? 'http://localhost:8000/api' : 'https://myshoppinglistserver.herokuapp.com/api';
 
 export const login = (data) => async (dispatch) => {
     try {
