@@ -1,0 +1,68 @@
+.items-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 6px rgba(0,0,0,0.2);;
+    left: 50%;
+    padding: 75px;
+    position: absolute;
+    top: 500px;
+    transform: translate(-50%, -50%);
+    margin: 50px 0px 0px 0px;
+}
+.items-table-container {
+    margin: 50px 0px 0px 0px;
+    border: 1px solid gray;
+}
+.items-page {
+    background: url('../../img/northern-lights.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    overflow: auto;
+}
+.create-item-text-field {
+    border: 1px solid !important;
+}
+.edit-item-text-field {
+    border: 1px solid !important;
+}
+.edit-item-text-field-text {
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 5px;
+    width: 250px;
+}
+.edit-item-header-wrapper {
+    display: flex;
+}
+.edit-item-row {
+    display: flex;
+}
+.edit-item-text-field-wrapper {
+    display: block;
+    margin: 0px 100px 0px 0px;
+}
+.edit-item-row-id {
+    display: block;
+    margin: 0px 335px 0px 0px;
+}
+.edit-item-error-message {
+    color: red;
+    margin: 30px 0px 0px 30px;
+}
+.edit-item-success-message {
+    color: green;
+    margin: 30px 0px 0px 30px;
+}
+.delete-item-fail-message {
+    color: red;
+    margin: 0 400px;
+    padding: 0;    
+}
+.delete-item-success-message {
+    color: green;
+    margin: 0 400px;
+    padding: 0;
+}
+.search-bar-container {
+    display: flex;
+}

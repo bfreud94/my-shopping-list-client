@@ -1,0 +1,64 @@
+.add-item-page {
+    background: url('../../img/northern-lights.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    overflow: auto;
+}
+.add-item-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 6px rgba(0,0,0,0.2);;
+    left: 50%;
+    padding: 75px;
+    position: absolute;
+    top: 500px;
+    transform: translate(-50%, -50%);
+}
+.add-item-date-picker-wrapper {
+    border: 0.5px solid #a3a6aa;
+    border-radius: 3px;
+    margin: 0px 0px 0px 10%;
+}
+.add-item-header {
+    font-family: 'Raleway', sans-serif;
+    margin: 0px 0px 25px 0px;
+    padding: 25px 0px 25px 0px;
+    text-align: center;
+}
+.add-item-success-message {
+    color: green;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 14%;
+    top: 8%;
+}
+.add-item-fail-message {
+    color: #ff5f4a;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 14%;
+    top: 8%;
+}
+.add-item-row {
+    display: flex;
+    margin: 0px 0px 50px 0px;
+}
+.add-buttons-row {
+    display: flex;
+    margin: 0 auto;
+}
+.add-item-row-item-name {
+    width: 500px;
+}
+.add-item-row-second-item {
+    margin: 0px 0px 0px 75px;
+}
+.add-item-row-wrapper {
+    display: block;
+}
+.add-item-text-field {
+    border: 1px solid !important;
+}

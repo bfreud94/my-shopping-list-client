@@ -1,0 +1,14 @@
+# Dependencies
+/node_modules
+
+# Production
+/build
+
+# Vercel
+.vercel
+
+# ESLint
+.eslintrc.json
+
+# Debug logs
+debug.log
