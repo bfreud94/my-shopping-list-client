@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Button, Table, TableHead, TableRow, TableCell, TableBody, TextField, withStyles } from '@material-ui/core';
 import { deleteItem, getItems, updateItem } from '../../actions/itemActions';
 import store from '../../store';
-import './ShoppingList.css';
+import './ItemsList.css';
 
 const styles = {
     deleteItemButton: {
@@ -25,7 +25,7 @@ const styles = {
     }
 };
 
-class ShoppingList extends Component {
+class ItemsList extends Component {
 
     constructor(props) {
         super(props);
@@ -83,32 +83,26 @@ class ShoppingList extends Component {
     }
 
     updateItem = async (item) => {
-        if (item.itemId === '') {
-            this.setState({
-                editItemErrorMessage: true
-            });
-        } else {
-            this.props.updateItem({
-                id: item.itemId,
-                name: item.nameTextField,
-                cost: item.costTextField,
-                dateAdded: item.dateAddedTextField,
-                purchaseByDate: item.purchaseByDateTextField,
-                linkToProduct: item.linkToProductTextField
-            });
-            this.setState({
-                editItem: {
-                    itemId: '',
-                    nameTextField: '',
-                    costTextField: '',
-                    dateAddedTextField: '',
-                    purchaseByDateTextField: '',
-                    linkToProductTextField: ''
-                },
-                editItemErrorMessage: false,
-                editItemSuccessMessage: true
-            });
-        }
+        this.props.updateItem({
+            id: item.itemId,
+            name: item.nameTextField,
+            cost: item.costTextField,
+            dateAdded: item.dateAddedTextField,
+            purchaseByDate: item.purchaseByDateTextField,
+            linkToProduct: item.linkToProductTextField
+        });
+        this.setState({
+            editItem: {
+                itemId: '',
+                nameTextField: '',
+                costTextField: '',
+                dateAddedTextField: '',
+                purchaseByDateTextField: '',
+                linkToProductTextField: ''
+            },
+            editItemErrorMessage: false,
+            editItemSuccessMessage: true
+        });
     }
 
     deleteItem = (item) => {
@@ -119,7 +113,7 @@ class ShoppingList extends Component {
         const { deleteItemError, deleteItemSuccess } = store.getState().itemData;
         const { searchBarTextField } = this.state;
         return (
-            <div className='search-bar-container'>
+            <div className='items-list-search-bar-container'>
                 <TextField
                     className='create-item-text-field'
                     value={searchBarTextField}
@@ -137,8 +131,7 @@ class ShoppingList extends Component {
 
     searchShoppingList = (item) => {
         const { searchBarTextField } = this.state;
-        return item._id.toString().includes(searchBarTextField)
-               || item.name.toLowerCase().includes(searchBarTextField.toLowerCase())
+        return item.name.toLowerCase().includes(searchBarTextField.toLowerCase())
                || item.cost.toString().toLowerCase().includes(searchBarTextField.toLowerCase())
                || item.dateAdded.toString().toLowerCase().includes(searchBarTextField.toLowerCase())
                || item.purchaseByDate.toString().toLowerCase().includes(searchBarTextField.toLowerCase())
@@ -164,9 +157,9 @@ class ShoppingList extends Component {
         return (
             <TableBody>
                 {items
-                ? items.map((item) => (
+                ? items.map((item, index) => (
                     this.searchShoppingList(item) ? (
-                        <TableRow key={item._id}>
+                        <TableRow key={index}>
                             <TableCell>{item.name}</TableCell>
                             <TableCell>{item.cost}</TableCell>
                             <TableCell>{moment(item.dateAdded).utc().format('MM/DD/YYYY')}</TableCell>
@@ -182,7 +175,7 @@ class ShoppingList extends Component {
                             </TableCell>
                         </TableRow>
                     )
-                    : <React.Fragment key={item._id} />
+                    : <React.Fragment key={index} />
                 )) : ''}
             </TableBody>
         );
@@ -214,7 +207,7 @@ class ShoppingList extends Component {
 
     editItem = () => {
         const { editItem } = this.state;
-        const { itemId, nameTextField, costTextField, dateAddedTextField, purchaseByDateTextField, linkToProductTextField } = editItem;
+        const { nameTextField, costTextField, dateAddedTextField, purchaseByDateTextField, linkToProductTextField } = editItem;
         const { classes } = this.props;
         return (
             <div>
@@ -224,10 +217,6 @@ class ShoppingList extends Component {
                     {this.displayUpdateMessage()}
                 </div>
                 <div className='edit-item-row'>
-                    <div className='edit-item-row-id'>
-                        <h4>Id</h4>
-                        <h5>{itemId}</h5>
-                    </div>
                     {this.editItemTextField('Name', nameTextField)}
                     {this.editItemTextField('Cost', costTextField)}
                 </div>
@@ -254,10 +243,10 @@ class ShoppingList extends Component {
 
     render() {
         return (
-            <div className='items-page'>
-                <div className='items-container'>
+            <div className='items-list-page'>
+                <div className='items-list-container'>
                     {this.searchBar()}
-                    <div className='items-table-container'>
+                    <div className='items-list-table-container'>
                         {this.displayTable()}
                     </div>
                     {this.editItem()}
@@ -267,7 +256,7 @@ class ShoppingList extends Component {
     }
 }
 
-ShoppingList.propTypes = {
+ItemsList.propTypes = {
     classes: PropTypes.objectOf(PropTypes.any).isRequired,
     deleteItem: PropTypes.func.isRequired,
     getItems: PropTypes.func.isRequired,
@@ -278,4 +267,4 @@ const mapStateToProps = (state) => ({
     itemData: state.itemData
 });
 
-export default connect(mapStateToProps, { deleteItem, getItems, updateItem })(withStyles(styles)(ShoppingList));
+export default connect(mapStateToProps, { deleteItem, getItems, updateItem })(withStyles(styles)(ItemsList));

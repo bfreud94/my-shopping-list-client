@@ -1,26 +1,19 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import { Provider } from 'react-redux';
-import { Redirect, BrowserRouter as Router, Route } from 'react-router-dom';
-import Header from './components/Header/Header';
-import AddItem from './components/AddItem/AddItem';
-import Login from './components/Login/Login';
-import ShoppingList from './components/ShoppingList/ShoppingList';
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppContainer from './components/AppContainer/AppContainer';
 import store from './store';
 import './App.css';
 
-class App extends React.Component {
+class App extends Component {
+
     render() {
         return (
             <Provider store={store}>
                 <Router>
-                    <Header />
-                    <Route exact path='/'>
-                        <Redirect to='/login' />
-                    </Route>
-                    <Route exact path='/login' component={Login} />
-                    <PrivateRoute exact path='/addItem' component={AddItem} />
-                    <PrivateRoute exact path='/shoppingList' component={ShoppingList} />
+                    <Fragment>
+                        <AppContainer />
+                    </Fragment>
                 </Router>
             </Provider>
         );

@@ -53,23 +53,28 @@ export const addItem = (item) => async (dispatch) => {
 };
 
 export const updateItem = (item) => async (dispatch) => {
-    await fetch(`${serviceUri}/items/item?id=${item.id}`, {
-        method: 'PUT',
-        headers: {
-            Authorization: localStorage.getItem('token'),
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name: item.name,
-            cost: item.cost,
-            dateAdded: item.dateAdded,
-            purchaseByDate: item.purchaseByDate,
-            linkToProduct: item.linkToProduct
-        })
-    });
-    dispatch({
-        type: UPDATE_ITEM
-    });
+    try {
+        await fetch(`${serviceUri}/items/item?id=${item.id}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: item.name,
+                cost: item.cost,
+                dateAdded: item.dateAdded,
+                purchaseByDate: item.purchaseByDate,
+                linkToProduct: item.linkToProduct
+            })
+        });
+        dispatch({
+            type: UPDATE_ITEM
+        });
+    } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log(err);
+    }
     dispatch(getItems());
 };
 

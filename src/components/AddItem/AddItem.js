@@ -5,7 +5,6 @@ import _ from 'lodash';
 import { TextField, withStyles } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import jwtDecode from 'jwt-decode';
 import { addItem, clearAddItem } from '../../actions/itemActions';
 import store from '../../store';
 import './AddItem.css';
@@ -45,25 +44,12 @@ class AddItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            firstName: '',
-            lastName: '',
-            email: '',
             itemNameTextField: '',
             costTextField: '',
             purchaseByDate: new Date(),
             linkToProductTextField: '',
             addedItemSuccessMessage: false
         };
-    }
-
-    componentDidMount() {
-        const token = localStorage.getItem('token');
-        const decoded = jwtDecode(token);
-        this.setState({
-            firstName: decoded.firstName,
-            lastName: decoded.lastName,
-            email: decoded.email
-        });
     }
 
     componentWillUnmount() {
@@ -143,14 +129,6 @@ class AddItem extends Component {
                 </MuiPickersUtilsProvider>
             </span>
         );
-    }
-
-    welcomeMessage = () => {
-        const { addedItemSuccessMessage, firstName, lastName, email } = this.state;
-        if (addedItemSuccessMessage === '') {
-            // eslint-disable-next-line no-console
-            console.log(`Welcome ${firstName} ${lastName}! Your email is ${email}`);
-        }
     }
 
     addItemSuccessMessage = () => (

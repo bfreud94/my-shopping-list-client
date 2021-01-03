@@ -22,7 +22,7 @@ class Header extends Component {
                         <br />
                         <React.Fragment>
                             <Link style={linkStyle} to="/addItem">Create Item | </Link>
-                            <Link style={linkStyle} to="/shoppingList">See All Items | </Link>
+                            <Link style={linkStyle} to="/itemsList">See All Items | </Link>
                             <Link style={linkStyle} to="/login" onClick={this.logout}>Logout</Link>
                         </React.Fragment>
                     </header>
