@@ -1,5 +1,6 @@
 import { ADD_ITEM_FAIL, ADD_ITEM_SUCCESS, DELETE_ITEM_FAIL, DELETE_ITEM_SUCCESS, CLEAR_ADD_ITEM, CLEAR_ITEMS, GET_ITEMS_FAIL, GET_ITEMS_SUCCESS, UPDATE_ITEM } from './types';
 import { parseError } from '../util/validation';
+import { logout } from './userActions';
 
 const serviceUri = process.env.NODE_ENV.trim() === 'development' ? 'http://localhost:8000/api' : 'https://myshoppinglistserver.herokuapp.com/api';
 
@@ -19,6 +20,7 @@ export const getItems = () => async (dispatch) => {
         dispatch({
             type: GET_ITEMS_FAIL
         });
+        dispatch(logout());
     }
 };
 
@@ -40,6 +42,8 @@ export const addItem = (item) => async (dispatch) => {
                 type: ADD_ITEM_FAIL,
                 payload: errors
             });
+        } else if (response.status === 401) {
+            dispatch(logout());
         } else {
             dispatch({
                 type: ADD_ITEM_SUCCESS,
@@ -54,7 +58,7 @@ export const addItem = (item) => async (dispatch) => {
 
 export const updateItem = (item) => async (dispatch) => {
     try {
-        await fetch(`${serviceUri}/items/item?id=${item.id}`, {
+        const response = await fetch(`${serviceUri}/items/item?id=${item.id}`, {
             method: 'PUT',
             headers: {
                 Authorization: localStorage.getItem('token'),
@@ -68,9 +72,13 @@ export const updateItem = (item) => async (dispatch) => {
                 linkToProduct: item.linkToProduct
             })
         });
-        dispatch({
-            type: UPDATE_ITEM
-        });
+        if (response.status === 401) {
+            dispatch(logout());
+        } else {
+            dispatch({
+                type: UPDATE_ITEM
+            });
+        }
     } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err);
@@ -79,24 +87,31 @@ export const updateItem = (item) => async (dispatch) => {
 };
 
 export const deleteItem = (item) => async (dispatch) => {
-    const response = await fetch(`${serviceUri}/items/item?id=${item._id}`, {
-        method: 'DELETE',
-        headers: {
-            Authorization: localStorage.getItem('token'),
-            'Content-Type': 'application/json'
+    try {
+        const response = await fetch(`${serviceUri}/items/item?id=${item._id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        if (data.deleted) {
+            dispatch({
+                type: DELETE_ITEM_SUCCESS
+            });
+            dispatch(getItems());
+        } else if (response.status === 401) {
+            dispatch(logout());
+        } else {
+            dispatch({
+                type: DELETE_ITEM_FAIL,
+                payload: data.message
+            });
         }
-    });
-    const data = await response.json();
-    if (data.deleted) {
-        dispatch({
-            type: DELETE_ITEM_SUCCESS
-        });
-        dispatch(getItems());
-    } else {
-        dispatch({
-            type: DELETE_ITEM_FAIL,
-            payload: data.message
-        });
+    } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log(err);
     }
 };
 

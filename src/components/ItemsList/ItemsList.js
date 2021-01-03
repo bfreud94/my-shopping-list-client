@@ -31,6 +31,8 @@ class ItemsList extends Component {
         super(props);
         this.state = {
             searchBarTextField: '',
+            sortBy: 'dateAdded',
+            items: [],
             editItem: {
                 itemId: '',
                 nameTextField: '',
@@ -46,6 +48,17 @@ class ItemsList extends Component {
 
     componentDidMount() {
         this.props.getItems();
+    }
+
+    componentDidUpdate() {
+        const { items } = this.state;
+        const storeItems = store.getState().itemData.items;
+        const isEqual = items.length === storeItems.length && items.every((value, index) => value === storeItems[index]);
+        if (!isEqual || (items.length === 0 && store.getState().itemData.items.length !== 0)) {
+            this.setState({
+                items: storeItems
+            });
+        }
     }
 
     changeState = (property, value) => {
@@ -107,7 +120,71 @@ class ItemsList extends Component {
 
     deleteItem = (item) => {
         this.props.deleteItem(item);
+        this.props.getItems();
+        this.setState({
+            items: []
+        });
     }
+
+    displayUpdateMessage = () => {
+        const { editItemErrorMessage, editItemSuccessMessage } = this.state;
+        if (editItemErrorMessage) {
+            return (
+                <h4 className='edit-item-error-message'>Please select an item</h4>
+            );
+        }
+        if (editItemSuccessMessage) {
+            return (
+                <h4 className='edit-item-success-message'>Item updated!</h4>
+            );
+        }
+        return (
+            <React.Fragment />
+        );
+    }
+
+    editItemTextField = (title, value) => (
+        <div className='edit-item-text-field-wrapper'>
+            <h4>{title}</h4>
+            <TextField className='edit-item-text-field' value={value} onChange={(e) => this.changeState(_.camelCase(title) + 'TextField', e.target.value)}
+                InputProps={{
+                    disableUnderline: true,
+                    className: 'edit-item-text-field-text'
+                }}
+            />
+        </div>
+    );
+
+    searchShoppingList = (item) => {
+        const { searchBarTextField } = this.state;
+        return item.name.toLowerCase().includes(searchBarTextField.toLowerCase())
+               || item.cost.toString().toLowerCase().includes(searchBarTextField.toLowerCase())
+               || item.dateAdded.toString().toLowerCase().includes(searchBarTextField.toLowerCase())
+               || item.purchaseByDate.toString().toLowerCase().includes(searchBarTextField.toLowerCase())
+               || item.linkToProduct.toLowerCase().includes(searchBarTextField.toLowerCase());
+    }
+
+    sortData = (param) => {
+        const { items, sortBy } = this.state;
+        const isReverse = items.length < 2 ? false : (items[0][sortBy] > items[1][sortBy]);
+        this.setState({
+            items: isReverse ? [...items].sort((a, b) => (a[sortBy] < b[sortBy] ? -1 : 1)) : [...items].sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : -1)),
+            sortBy: param
+        });
+    }
+
+    displayTableHeader = () => (
+        <TableHead>
+            <TableRow>
+                <TableCell className='item-list-table-header' onClick={() => this.sortData('name')}>Name</TableCell>
+                <TableCell className='item-list-table-header' onClick={() => this.sortData('cost')}>Cost</TableCell>
+                <TableCell className='item-list-table-header' onClick={() => this.sortData('dateAdded')}>Date Added</TableCell>
+                <TableCell className='item-list-table-header' onClick={() => this.sortData('purchaseByDate')}>Purchase By</TableCell>
+                <TableCell className='item-list-table-header' onClick={() => this.sortData('linkToProduct')}>Link To Product</TableCell>
+                <TableCell className='item-list-table-header'>Actions</TableCell>
+            </TableRow>
+        </TableHead>
+    );
 
     searchBar = () => {
         const { deleteItemError, deleteItemSuccess } = store.getState().itemData;
@@ -129,30 +206,8 @@ class ItemsList extends Component {
         );
     }
 
-    searchShoppingList = (item) => {
-        const { searchBarTextField } = this.state;
-        return item.name.toLowerCase().includes(searchBarTextField.toLowerCase())
-               || item.cost.toString().toLowerCase().includes(searchBarTextField.toLowerCase())
-               || item.dateAdded.toString().toLowerCase().includes(searchBarTextField.toLowerCase())
-               || item.purchaseByDate.toString().toLowerCase().includes(searchBarTextField.toLowerCase())
-               || item.linkToProduct.toLowerCase().includes(searchBarTextField.toLowerCase());
-    }
-
-    displayTableHeader = () => (
-        <TableHead>
-            <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Cost</TableCell>
-                <TableCell>Date Added</TableCell>
-                <TableCell>Purchase By</TableCell>
-                <TableCell>Link To Product</TableCell>
-                <TableCell>Actions</TableCell>
-            </TableRow>
-        </TableHead>
-    );
-
     displayTableBody = () => {
-        const { items } = store.getState().itemData;
+        const { items } = this.state;
         const { classes } = this.props;
         return (
             <TableBody>
@@ -188,23 +243,6 @@ class ItemsList extends Component {
         </Table>
     );
 
-    displayUpdateMessage = () => {
-        const { editItemErrorMessage, editItemSuccessMessage } = this.state;
-        if (editItemErrorMessage) {
-            return (
-                <h4 className='edit-item-error-message'>Please select an item</h4>
-            );
-        }
-        if (editItemSuccessMessage) {
-            return (
-                <h4 className='edit-item-success-message'>Item updated!</h4>
-            );
-        }
-        return (
-            <React.Fragment />
-        );
-    }
-
     editItem = () => {
         const { editItem } = this.state;
         const { nameTextField, costTextField, dateAddedTextField, purchaseByDateTextField, linkToProductTextField } = editItem;
@@ -228,18 +266,6 @@ class ItemsList extends Component {
             </div>
         );
     }
-
-    editItemTextField = (title, value) => (
-        <div className='edit-item-text-field-wrapper'>
-            <h4>{title}</h4>
-            <TextField className='edit-item-text-field' value={value} onChange={(e) => this.changeState(_.camelCase(title) + 'TextField', e.target.value)}
-                InputProps={{
-                    disableUnderline: true,
-                    className: 'edit-item-text-field-text'
-                }}
-            />
-        </div>
-    );
 
     render() {
         return (
