@@ -24,8 +24,12 @@
 .items-list-search-bar-container {
     display: flex;
 }
-.item-list-table-header {
+.items-list-table-header {
     cursor: pointer;
+}
+.items-list-image {
+    height: 100px;
+    width: 100px;
 }
 .create-item-text-field {
     border: 1px solid !important;

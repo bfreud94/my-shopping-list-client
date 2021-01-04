@@ -28,6 +28,14 @@
     padding: 25px 0px 25px 0px;
     text-align: center;
 }
+.add-item-row-image {
+    display: flex;
+}
+.add-item-image-preview {
+    height: 100px;
+    margin: 0px 0px 0px 50px;
+    width: 100px;
+}
 .add-item-success-message {
     color: green;
     left: 14%;

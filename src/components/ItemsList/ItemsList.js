@@ -178,12 +178,13 @@ class ItemsList extends Component {
     displayTableHeader = () => (
         <TableHead>
             <TableRow>
-                <TableCell className='item-list-table-header' onClick={() => this.sortData('name')}>Name</TableCell>
-                <TableCell className='item-list-table-header' onClick={() => this.sortData('cost')}>Cost</TableCell>
-                <TableCell className='item-list-table-header' onClick={() => this.sortData('dateAdded')}>Date Added</TableCell>
-                <TableCell className='item-list-table-header' onClick={() => this.sortData('purchaseByDate')}>Purchase By</TableCell>
-                <TableCell className='item-list-table-header' onClick={() => this.sortData('linkToProduct')}>Link To Product</TableCell>
-                <TableCell className='item-list-table-header'>Actions</TableCell>
+                <TableCell className='items-list-table-header'>Image</TableCell>
+                <TableCell className='items-list-table-header' onClick={() => this.sortData('name')}>Name</TableCell>
+                <TableCell className='items-list-table-header' onClick={() => this.sortData('cost')}>Cost</TableCell>
+                <TableCell className='items-list-table-header' onClick={() => this.sortData('dateAdded')}>Date Added</TableCell>
+                <TableCell className='items-list-table-header' onClick={() => this.sortData('purchaseByDate')}>Purchase By</TableCell>
+                <TableCell className='items-list-table-header' onClick={() => this.sortData('linkToProduct')}>Link To Product</TableCell>
+                <TableCell className='items-list-table-header'>Actions</TableCell>
             </TableRow>
         </TableHead>
     );
@@ -217,6 +218,9 @@ class ItemsList extends Component {
                 ? items.map((item, index) => (
                     this.searchShoppingList(item) ? (
                         <TableRow key={index}>
+                            <TableCell>
+                                <img className='items-list-image' src={item.itemURL} alt={item.name} />
+                            </TableCell>
                             <TableCell>{item.name}</TableCell>
                             <TableCell>{item.cost}</TableCell>
                             <TableCell>{moment(item.dateAdded).utc().format('MM/DD/YYYY')}</TableCell>

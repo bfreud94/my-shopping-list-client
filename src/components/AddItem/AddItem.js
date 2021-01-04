@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -47,6 +47,7 @@ class AddItem extends Component {
             itemNameTextField: '',
             costTextField: '',
             purchaseByDate: new Date(),
+            image: '',
             linkToProductTextField: '',
             addedItemSuccessMessage: false
         };
@@ -82,12 +83,14 @@ class AddItem extends Component {
     }
 
     addItem = () => {
-        const { itemNameTextField, costTextField, purchaseByDate, linkToProductTextField } = this.state;
+        const { itemNameTextField, costTextField, purchaseByDate, linkToProductTextField, image } = this.state;
         this.props.addItem({
             name: itemNameTextField,
             cost: costTextField,
             purchaseByDate,
-            linkToProduct: linkToProductTextField
+            linkToProduct: linkToProductTextField,
+            image
+
         });
         this.setState({
             itemNameTextField: '',
@@ -143,6 +146,18 @@ class AddItem extends Component {
         );
     };
 
+    imageInput = () => {
+        const { image } = this.state;
+        return (
+            <div className='add-item-row-image'>
+                <input type='file' onChange={(e) => this.changeState('image', e.target.files[0])} />
+                {image !== ''
+                    ? <img src={URL.createObjectURL(image)} className='add-item-image-preview' alt='img' />
+                    : <Fragment />}
+            </div>
+        );
+    }
+
     render() {
         const { itemNameTextField, costTextField, linkToProductTextField } = this.state;
         const { classes } = this.props;
@@ -158,6 +173,9 @@ class AddItem extends Component {
                     <div className='add-item-row'>
                         {this.displayTextField('Cost', costTextField, false)}
                         {this.displayCalendarSelect('Purchase By Date')}
+                    </div>
+                    <div className='add-item-row'>
+                        {this.imageInput()}
                     </div>
                     <div className='add-item-row'>
                         {this.displayTextField('Link To Product', linkToProductTextField, false)}

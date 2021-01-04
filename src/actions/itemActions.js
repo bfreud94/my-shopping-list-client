@@ -26,13 +26,16 @@ export const getItems = () => async (dispatch) => {
 
 export const addItem = (item) => async (dispatch) => {
     try {
+        const formData = new FormData();
+        Object.keys(item).forEach((key) => {
+            formData.append(key, item[key]);
+        });
         const response = await fetch(`${serviceUri}/items/item`, {
             method: 'POST',
             headers: {
-                Authorization: localStorage.getItem('token'),
-                'Content-Type': 'application/json'
+                Authorization: localStorage.getItem('token')
             },
-            body: JSON.stringify({ item })
+            body: formData
         });
         const data = await response.json();
         if (response.status === 500) {
