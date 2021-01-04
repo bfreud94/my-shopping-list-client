@@ -42,7 +42,8 @@ class ItemsList extends Component {
                 linkToProductTextField: ''
             },
             editItemErrorMessage: false,
-            editItemSuccessMessage: false
+            editItemSuccessMessage: false,
+            justSorted: false
         };
     }
 
@@ -51,12 +52,12 @@ class ItemsList extends Component {
     }
 
     componentDidUpdate() {
-        const { items } = this.state;
+        const { items, justSorted } = this.state;
         const storeItems = store.getState().itemData.items;
-        const isEqual = items.length === storeItems.length && items.every((value, index) => value === storeItems[index]);
-        if (!isEqual || (items.length === 0 && store.getState().itemData.items.length !== 0)) {
+        if ((!_.isEqual(items, storeItems) && !justSorted) || (items.length === 0 && store.getState().itemData.items.length !== 0)) {
             this.setState({
-                items: storeItems
+                items: storeItems,
+                justSorted: false
             });
         }
     }
@@ -169,7 +170,8 @@ class ItemsList extends Component {
         const isReverse = items.length < 2 ? false : (items[0][sortBy] > items[1][sortBy]);
         this.setState({
             items: isReverse ? [...items].sort((a, b) => (a[sortBy] < b[sortBy] ? -1 : 1)) : [...items].sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : -1)),
-            sortBy: param
+            sortBy: param,
+            justSorted: true
         });
     }
 
