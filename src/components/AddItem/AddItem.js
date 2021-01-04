@@ -69,7 +69,8 @@ class AddItem extends Component {
             costTextField: '',
             purchaseByDate: new Date(),
             linkToProductTextField: '',
-            addedItemSuccessMessage: false
+            addedItemSuccessMessage: false,
+            image: ''
         });
     }
 
@@ -92,12 +93,7 @@ class AddItem extends Component {
             image
 
         });
-        this.setState({
-            itemNameTextField: '',
-            costTextField: '',
-            purchaseByDate: new Date(),
-            linkToProductTextField: ''
-        });
+        this.clearTextFields();
     }
 
     displayTextField = (title, value, isFirst) => {
@@ -150,8 +146,8 @@ class AddItem extends Component {
         const { image } = this.state;
         return (
             <div className='add-item-row-image'>
-                <input type='file' onChange={(e) => this.changeState('image', e.target.files[0])} />
-                {image !== ''
+                <input type='file' onChange={(e) => this.changeState('image', e.target.files[0] === undefined ? '' : e.target.files[0])} />
+                {image !== '' && image !== undefined
                     ? <img src={URL.createObjectURL(image)} className='add-item-image-preview' alt='img' />
                     : <Fragment />}
             </div>
