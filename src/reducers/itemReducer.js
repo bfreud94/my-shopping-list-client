@@ -1,6 +1,10 @@
 import { ADD_ITEM_FAIL, ADD_ITEM_SUCCESS, CLEAR_ADD_ITEM, CLEAR_ITEMS, DELETE_ITEM_FAIL, DELETE_ITEM_SUCCESS, GET_ITEMS_FAIL, GET_ITEMS_SUCCESS, UPDATE_ITEM } from '../actions/types';
 
 const initialState = {
+    addItemSuccess: false,
+    deleteItemSuccess: false,
+    deleteItemError: '',
+    errors: [],
     items: []
 };
 
@@ -10,13 +14,13 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 addItemSuccess: true,
-                addItemErrors: []
+                errors: []
             };
         case ADD_ITEM_FAIL:
             return {
                 ...state,
                 addItemSuccess: false,
-                addItemErrors: action.payload
+                errors: action.payload
             };
         case DELETE_ITEM_SUCCESS:
             return {

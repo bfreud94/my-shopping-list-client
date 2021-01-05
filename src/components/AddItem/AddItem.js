@@ -135,7 +135,7 @@ class AddItem extends Component {
     );
 
     addItemFailMessage = () => {
-        const errors = store.getState().itemData.addItemErrors;
+        const { errors } = store.getState().itemData;
         const errorMessage = errors.length > 1 ? 'Multiple form errors' : (typeof errors[0] === 'object' ? errors[0].error : errors[0]);
         return (
             <h2 className='add-item-fail-message'>{`Error: ${errorMessage}`}</h2>
@@ -156,13 +156,13 @@ class AddItem extends Component {
 
     render() {
         const { itemNameTextField, costTextField, linkToProductTextField } = this.state;
-        const { addItemSuccess, addItemErrors } = store.getState().itemData;
+        const { addItemSuccess, errors } = store.getState().itemData;
         const { classes } = this.props;
         return (
             <div className='add-item-page'>
                 <div className='add-item-container'>
                     {addItemSuccess ? this.addItemSuccessMessage() : ''}
-                    {addItemErrors !== undefined && addItemErrors.length > 0 ? this.addItemFailMessage() : ''}
+                    {errors !== undefined && errors.length > 0 ? this.addItemFailMessage() : ''}
                     <h1 className='add-item-header'>Add an item to your shopping list</h1>
                     <div className='add-item-row'>
                         {this.displayTextField('Item Name', itemNameTextField, false)}
