@@ -136,7 +136,7 @@ class AddItem extends Component {
 
     addItemFailMessage = () => {
         const errors = store.getState().itemData.addItemErrors;
-        const errorMessage = errors.length > 1 ? 'Multiple form errors' : `${errors[0].error} - ${_.startCase(errors[0].field)}`;
+        const errorMessage = errors.length > 1 ? 'Multiple form errors' : (typeof errors[0] === 'object' ? errors[0].error : errors[0]);
         return (
             <h2 className='add-item-fail-message'>{`Error: ${errorMessage}`}</h2>
         );
