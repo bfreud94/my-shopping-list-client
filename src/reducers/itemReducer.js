@@ -9,7 +9,8 @@ export default function (state = initialState, action) {
         case ADD_ITEM_SUCCESS:
             return {
                 ...state,
-                addItemSuccess: true
+                addItemSuccess: true,
+                addItemErrors: []
             };
         case ADD_ITEM_FAIL:
             return {
